@@ -18,7 +18,7 @@ import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import br.com.dev.minhasfinancas.config.MsgConfigration;
+import br.com.dev.minhasfinancas.config.MsgConfiguration;
 import br.com.dev.minhasfinancas.exception.AuthenticationError;
 import br.com.dev.minhasfinancas.exception.BusinessRuleException;
 import br.com.dev.minhasfinancas.model.entity.UserEntity;
@@ -30,7 +30,7 @@ import br.com.dev.minhasfinancas.service.impl.UserServiceImpl;
 public class UserServiceTest {
 
 	@MockBean
-	MsgConfigration messages;
+	MsgConfiguration messages;
 	
 	@MockBean
 	UserRepository userRepository;
@@ -67,7 +67,7 @@ public class UserServiceTest {
 		//Ação
 		when(userRepository.findByEmail(anyString())).thenReturn(Optional.empty());
 		
-		when(messages.get("user.service.user-not-found")).thenReturn("Usuário não encontrado para o email informado.");
+		when(messages.getMessage("user.service.user-not-found")).thenReturn("Usuário não encontrado para o email informado.");
 		
 		Throwable exception = Assertions.catchThrowable( () -> userServiceImpl.authenticate("teste@gmail.com", "senha") );
 		
@@ -84,7 +84,7 @@ public class UserServiceTest {
 		//Ação
 		when(userRepository.findByEmail(anyString())).thenReturn(Optional.of(user));
 		
-		when(messages.get("user.service.password-invalid")).thenReturn("Senha inválida.");
+		when(messages.getMessage("user.service.password-invalid")).thenReturn("Senha inválida.");
 		
 		Throwable exception = Assertions.catchThrowable( () -> userServiceImpl.authenticate("teste@gmail.com", "senha123") );
 		
@@ -154,7 +154,7 @@ public class UserServiceTest {
 		//Cenário
 		when(userRepository.existsByEmail(anyString())).thenReturn(true);
 		
-		when(messages.get("user.service.user-existing")).thenReturn("Já existe um usuário cadastrado com este email.");
+		when(messages.getMessage("user.service.user-existing")).thenReturn("Já existe um usuário cadastrado com este email.");
 		
 		//Ação
 		Throwable exception = Assertions.catchThrowable( () -> userServiceImpl.emailValidate("teste@gmail.com") );

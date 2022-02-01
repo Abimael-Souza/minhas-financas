@@ -7,7 +7,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import br.com.dev.minhasfinancas.config.MsgConfigration;
+import br.com.dev.minhasfinancas.config.MsgConfiguration;
 import br.com.dev.minhasfinancas.exception.AuthenticationError;
 import br.com.dev.minhasfinancas.exception.BusinessRuleException;
 import br.com.dev.minhasfinancas.model.entity.UserEntity;
@@ -21,7 +21,7 @@ public class UserServiceImpl implements UserService{
 	private UserRepository userRepository;
 	
 	@Autowired
-	private MsgConfigration messages;
+	private MsgConfiguration messages;
 	
 	@Override
 	public UserEntity authenticate(String email, String password) {
@@ -29,11 +29,11 @@ public class UserServiceImpl implements UserService{
 		Optional<UserEntity> user = userRepository.findByEmail(email);
 		
 		if(!user.isPresent()) {
-			throw new AuthenticationError(messages.get("user.service.user-not-found"));
+			throw new AuthenticationError(messages.getMessage("user.service.user-not-found"));
 		}
 		
 		if (!user.get().getPassword().equals(password)) {
-			throw new AuthenticationError(messages.get("user.service.password-invalid"));
+			throw new AuthenticationError(messages.getMessage("user.service.password-invalid"));
 		}
 		
 		return user.get();
@@ -50,7 +50,7 @@ public class UserServiceImpl implements UserService{
 	public void emailValidate(String email) {
 		
 		if(userRepository.existsByEmail(email)) {
-			throw new BusinessRuleException(messages.get("user.service.user-existing"));
+			throw new BusinessRuleException(messages.getMessage("user.service.user-existing"));
 		}
 	}
 
